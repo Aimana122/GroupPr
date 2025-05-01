@@ -30,6 +30,7 @@ body {
       background-color: #3498db;
       color: white;
       margin-top: 0.5rem;
+          width: 33%;
     }
     button:hover {
       background-color: #2980b9;

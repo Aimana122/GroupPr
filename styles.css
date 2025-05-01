@@ -18,13 +18,13 @@ body {
       max-width: 960px;
       margin: auto;
     }
-#pdfContainer {
+    #pdfContainer {
             height: 600px;
             margin: 20px 0;
             border: 1px solid #ccc;
             display: none;
         }
-        #toggleButton {
+     #toggleButton {
             padding: 10px 20px;
             background: #007bff;
             color: white;

@@ -26,6 +26,9 @@ body {
       font-size: 1rem;
       border: none;
     }
+.style11{
+          width: 97.5%;
+}
     button {
       background-color: #3498db;
       color: white;

@@ -24,13 +24,23 @@ body {
             border: 1px solid #ccc;
             display: none;
         }
-     #toggleButton {
+        #toggleButton {
             padding: 10px 20px;
             background: #007bff;
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 5px;
+           width: 50%;
+        }
+        #toggleButton1 {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 50%;
         }
     textarea, select, input, button {
       width: 100%;

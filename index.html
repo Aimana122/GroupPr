@@ -65,6 +65,248 @@
        <h3>Aimana</h3> 
       </div>
     </div>
+
+    <div class="cipher-demo">
+  <h3>Caesar Cipher</h3>
+  <div class="alphabet-wheel">
+    <div class="inner-wheel">A B C D E F G H I J K L M</div>
+    <div class="outer-wheel">N O P Q R S T U V W X Y Z</div>
+  </div>
+  <input type="range" min="0" max="25" value="3" id="caesar-shift">
+  <div class="demo">
+    <p>Plaintext: <span id="caesar-plain">HELLO</span></p>
+    <p>Encrypted: <span id="caesar-cipher">KHOOR</span></p>
+  </div>
+</div>
+<div class="cipher-demo">
+  <h3>Atbash Cipher</h3>
+  <div class="mirror">
+    <div class="original">A B C D E F G H I J K L M</div>
+    <div class="mirror-line">⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅</div>
+    <div class="transformed">Z Y X W V U T S R Q P O N</div>
+  </div>
+  <div class="demo">
+    <p>Plaintext: <span>CRYPTO</span></p>
+    <p>Encrypted: <span>XIBKGL</span></p>
+  </div>
+</div>
+<div class="cipher-demo">
+  <h3>Vigenère Cipher</h3>
+  <div class="vigenere-table">
+    <table>
+      <!-- Таблица 26x26 будет генерироваться скриптом -->
+    </table>
+  </div>
+  <div class="demo">
+    <p>Key: <input type="text" value="KEY" id="vigenere-key"></p>
+    <p>Plaintext: <span>ATTACK</span></p>
+    <p>Encrypted: <span id="vigenere-output">KXIPKM</span></p>
+  </div>
+</div>
+
+<script>
+  // Генерация таблицы Виженера
+  const table = document.querySelector('.vigenere-table table');
+  let html = '<tr><th></th>';
+  
+  // Заголовки столбцов
+  for(let i=0; i<26; i++) {
+    html += `<th>${String.fromCharCode(65+i)}</th>`;
+  }
+  html += '</tr>';
+  
+  // Тело таблицы
+  for(let row=0; row<26; row++) {
+    html += `<tr><th>${String.fromCharCode(65+row)}</th>`;
+    for(let col=0; col<26; col++) {
+      const char = String.fromCharCode(65 + (row + col) % 26);
+      html += `<td>${char}</td>`;
+    }
+    html += '</tr>';
+  }
+  
+  table.innerHTML = html;  
+ // Обработка ввода
+  document.getElementById('vigenere-key').addEventListener('input', function() {
+    const key = this.value.toUpperCase().replace(/[^A-Z]/g, '');
+    const plainText = "ATTACK";
+    let cipherText = "";
+    
+    for(let i=0; i<plainText.length; i++) {
+      const keyChar = key.charCodeAt(i % key.length) - 65;
+      const plainChar = plainText.charCodeAt(i) - 65;
+      const cipherChar = String.fromCharCode((plainChar + keyChar) % 26 + 65);
+      cipherText += cipherChar;
+    }
+    
+    document.getElementById('vigenere-output').textContent = cipherText;
+  });
+</script>
+<div class="cipher-demo">
+  <h3>Columnar Transposition</h3>
+  <div class="transposition-grid">
+    <div class="grid" id="trans-grid"></div>
+    <div class="controls">
+      <label>Columns: <input type="number" value="4" min="2" max="8" id="col-count"></label>
+      <button onclick="encrypt()">Encrypt</button>
+    </div>
+  </div>
+  <div class="demo">
+    <p>Plaintext: <span>CRYPTOGRAPHY</span></p>
+    <p>Encrypted: <span id="trans-output">CYPTRHGORAPY</span></p>
+  </div>
+</div>
+
+<script>
+  function createGrid() {
+    const cols = parseInt(document.getElementById('col-count').value);
+    const text = "CRYPTOGRAPHY";
+    const grid = document.getElementById('trans-grid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
+    
+    for(let i=0; i<text.length; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.textContent = text[i];
+      cell.dataset.index = i;
+      grid.appendChild(cell);
+    }
+  }
+  
+  function encrypt() {
+    const cols = parseInt(document.getElementById('col-count').value);
+    const text = "CRYPTOGRAPHY";
+    let encrypted = '';
+    
+    // Чтение по столбцам
+    for(let col=0; col<cols; col++) {
+      for(let row=0; row<Math.ceil(text.length/cols); row++) {
+        const index = row*cols + col;
+        if(index < text.length) {
+          encrypted += text[index];
+        }
+      }
+    }
+    
+    document.getElementById('trans-output').textContent = encrypted;
+    highlightGrid(encrypted);
+  }
+  
+  function highlightGrid(encrypted) {
+    document.querySelectorAll('.cell').forEach(cell => {
+      cell.classList.remove('active');
+    });
+    
+    let delay = 0;
+    for(let char of encrypted) {
+      const index = "CRYPTOGRAPHY".indexOf(char);
+      setTimeout(() => {
+        document.querySelector(`.cell[data-index="${index}"]`).classList.add('active');
+      }, delay * 300);
+      delay++;
+    }
+  }
+  
+  createGrid();
+  document.getElementById('col-count').addEventListener('change', createGrid);
+</script>
+<div class="cipher-demo">
+  <h3>RSA Encryption</h3>
+  <div class="rsa-steps">
+    <div class="step">
+      <p>1. Choose primes: p=3, q=11</p>
+      <p>2. n = p×q = <span>33</span></p>
+      <p>3. φ(n) = (p-1)(q-1) = <span>20</span></p>
+      <p>4. Choose e=3 (co-prime to φ(n))</p>
+      <p>5. Find d where (d×e) mod φ(n) = 1 → d=7</p>
+    </div>
+    <div class="encryption">
+      <p>Public Key: (e=3, n=33)</p>
+      <p>Private Key: (d=7, n=33)</p>
+      <div class="operation">
+        <p>Encrypt M=15: C = M<sup>e</sup> mod n = 15<sup>3</sup> mod 33 = <span>9</span></p>
+        <div class="animation" id="rsa-enc-anim"></div>
+      </div>
+      <div class="operation">
+        <p>Decrypt C=9: M = C<sup>d</sup> mod n = 9<sup>7</sup> mod 33 = <span>15</span></p>
+        <div class="animation" id="rsa-dec-anim"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cipher-demo">
+  <h3>AES Encryption</h3>
+  <div class="aes-state">
+    <div class="state-header">Initial State:</div>
+    <div class="state-grid" id="aes-grid"></div>
+  </div>
+  <div class="aes-controls">
+    <button onclick="aesStep('subBytes')">SubBytes</button>
+    <button onclick="aesStep('shiftRows')">ShiftRows</button>
+    <button onclick="aesStep('mixColumns')">MixColumns</button>
+    <button onclick="aesStep('addRoundKey')">AddRoundKey</button>
+  </div>
+</div>
+
+<script>
+  // Начальное состояние
+  const aesState = [
+    ['54', '68', '61', '74'],
+    ['73', '20', '6D', '79'],
+    ['20', '4B', '75', '6E'],
+    ['67', '46', '75', '20']
+  ];
+  
+  // Инициализация сетки
+  function initAesGrid() {
+    const grid = document.getElementById('aes-grid');
+    grid.innerHTML = '';
+    
+    for(let row=0; row<4; row++) {
+      for(let col=0; col<4; col++) {
+        const cell = document.createElement('div');
+        cell.className = 'aes-cell';
+        cell.textContent = aesState[row][col];
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        grid.appendChild(cell);
+      }
+    }
+  }
+  
+  // Шаги AES
+  function aesStep(step) {
+    const cells = document.querySelectorAll('.aes-cell');
+    
+    // Анимация
+    cells.forEach(cell => {
+      cell.classList.remove('changed');
+      void cell.offsetWidth; // Trigger reflow
+    });
+    
+    setTimeout(() => {
+      // Обновление состояния (упрощённое)
+      for(let i=0; i<4; i++) {
+        for(let j=0; j<4; j++) {
+          // В реальной реализации здесь происходят преобразования
+          // Для демонстрации просто изменяем значения
+          aesState[i][j] = Math.floor(Math.random()*256).toString(16).padStart(2, '0').toUpperCase();
+        }
+      }
+      
+      // Обновление сетки
+      cells.forEach(cell => {
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        cell.textContent = aesState[row][col];
+        cell.classList.add('changed');
+      });
+    }, 300);
+  }
+  
+  initAesGrid();
+</script>
     
     <div id="learning" class="tab-content">
       <h2>What This Cryptography Showcase Teaches:</h2>

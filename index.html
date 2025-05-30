@@ -68,6 +68,11 @@
 
     <div class="cipher-demo">
   <h3>Caesar Cipher</h3>
+        <div class="description">
+    <p><strong>How it works:</strong> Each letter is shifted a fixed number of positions in the alphabet (e.g., shift=3: A→D, B→E). The shift value serves as the key.</p>
+    <p><strong>Encryption:</strong> E(x) = (x + k) mod 26</p>
+    <p><strong>Decryption:</strong> D(x) = (x - k) mod 26</p>
+  </div>
   <div class="alphabet-wheel">
     <div class="inner-wheel">A B C D E F G H I J K L M</div>
     <div class="outer-wheel">N O P Q R S T U V W X Y Z</div>
@@ -79,6 +84,10 @@
 </div>
 <div class="cipher-demo">
   <h3>Atbash Cipher</h3>
+  <div class="description">
+    <p><strong>How it works:</strong> Each letter is mapped to its reverse counterpart (A→Z, B→Y, C→X, etc.). It's a Hebrew-origin cipher that serves as its own inverse.</p>
+    <p><strong>Encryption/Decryption:</strong> E(x) = D(x) = 25 - position(x)</p>
+  </div>
   <div class="mirror">
     <div class="original">A B C D E F G H I J K L M</div>
     <div class="mirror-line">⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅ ⇅</div>
@@ -91,6 +100,10 @@
 </div>
 <div class="cipher-demo">
   <h3>Vigenère Cipher</h3>
+    <div class="description">
+    <p><strong>How it works:</strong> Uses a keyword to create multiple Caesar shifts. The keyword is repeated to match the message length. Each character's shift depends on the corresponding key character.</p>
+    <p><strong>Encryption:</strong> E(xᵢ) = (xᵢ + k₍ᵢ ₘₒ𝒹 𝓁₎) mod 26</p>
+  </div>
   <div class="vigenere-table">
     <table>
       <!-- Таблица 26x26 будет генерироваться скриптом -->
@@ -143,6 +156,10 @@
 </script>
 <div class="cipher-demo">
   <h3>Columnar Transposition</h3>
+    <div class="description">
+    <p><strong>How it works:</strong> Plaintext is written row-wise in a grid, then read column-wise to produce ciphertext. The number of columns serves as the key.</p>
+    <p><strong>Security:</strong> Preserves letter frequencies but obscures sequences.</p>
+  </div>
   <div class="transposition-grid">
     <div class="grid" id="trans-grid"></div>
     <div class="controls">
@@ -212,6 +229,12 @@
 </script>
 <div class="cipher-demo">
   <h3>RSA Encryption</h3>
+    <div class="description">
+    <p><strong>How it works:</strong> Public-key cryptosystem using prime factorization. Messages are numbers where:</p>
+    <p>• <strong>Public key</strong> (e, n) encrypts: c ≡ mᵉ mod n</p>
+    <p>• <strong>Private key</strong> (d, n) decrypts: m ≡ cᵈ mod n</p>
+    <p>Security relies on difficulty of factoring n = p×q.</p>
+  </div>
   <div class="rsa-steps">
     <div class="step">
       <p>1. Choose primes: p=3, q=11</p>
@@ -236,6 +259,14 @@
 </div>
 <div class="cipher-demo">
   <h3>AES Encryption</h3>
+    <div class="description">
+    <p><strong>How it works:</strong> Symmetric block cipher processing 128-bit blocks through multiple rounds:</p>
+    <p>1. <strong>SubBytes</strong>: Non-linear byte substitution (S-box)</p>
+    <p>2. <strong>ShiftRows</strong>: Cyclic row shifting</p>
+    <p>3. <strong>MixColumns</strong>: Column mixing via matrix multiplication</p>
+    <p>4. <strong>AddRoundKey</strong>: XOR with round key</p>
+    <p>Final round omits MixColumns. 128/192/256-bit key versions.</p>
+  </div>
   <div class="aes-state">
     <div class="state-header">Initial State:</div>
     <div class="state-grid" id="aes-grid"></div>

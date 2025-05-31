@@ -52,7 +52,7 @@ body {
   background: #9c8011;
   z-index: 2;
 }
-.original .transformed{
+.original, .transformed{
           letter-spacing: 5.5px;
 }
 .outer-wheel {
